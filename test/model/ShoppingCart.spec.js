@@ -3,59 +3,38 @@ import Product from "../../src/model/Product.js";
 import ShoppingCart from "../../src/model/ShoppingCart.js";
 
 describe("Shopping cart should checkout", () => {
-    let fakeOrderService;
-    let fakeShowConfirmation;
-
-    beforeEach(() => {
-        fakeShowConfirmation = jest.fn();
-        fakeOrderService = {
-            showConfirmation: fakeShowConfirmation
-        };
-    });
 
     it("Should calculate correct total and loyalty points for 10% discounted products", () => {
         const customer = new Customer("Test customer");
         const products = [new Product(100, "DIS_10_TestProduct", "Test product")];
         const shoppingCart = new ShoppingCart(customer, products);
-        shoppingCart.setOrderService(fakeOrderService);
+        
+        const order = shoppingCart.checkout();
 
-        shoppingCart.checkout();
-
-        expect(fakeShowConfirmation).toHaveBeenCalledTimes(1);
-        const actualTotalPrice = fakeShowConfirmation.mock.calls[0][2];
-        const actualLoyaltyPointsEarned = fakeShowConfirmation.mock.calls[0][3];
-        expect(actualTotalPrice).toBe(90);
-        expect(actualLoyaltyPointsEarned).toBe(10);
+        expect(order.totalPrice).toBe(90);
+        expect(order.loyaltyPoints).toBe(10);
     });
 
     it("Should calculate correct total and loyalty points for 15% discounted products", () => {
         const customer = new Customer("Test customer");
         const products = [new Product(150, "DIS_15_TestProduct", "Test product")];
         const shoppingCart = new ShoppingCart(customer, products);
-        shoppingCart.setOrderService(fakeOrderService);
 
-        shoppingCart.checkout();
+        const order = shoppingCart.checkout();
 
-        expect(fakeShowConfirmation).toHaveBeenCalledTimes(1);
-        const actualTotalPrice = fakeShowConfirmation.mock.calls[0][2];
-        const actualLoyaltyPointsEarned = fakeShowConfirmation.mock.calls[0][3];
-        expect(actualTotalPrice).toBe(127.5);
-        expect(actualLoyaltyPointsEarned).toBe(10);
+        expect(order.totalPrice).toBe(127.5);
+        expect(order.loyaltyPoints).toBe(10);
     });
 
     it("Should calculate correct total and loyalty points for non discounted products", () => {
         const customer = new Customer("Test customer");
         const products = [new Product(100, "TestProduct", "Test product")];
         const shoppingCart = new ShoppingCart(customer, products);
-        shoppingCart.setOrderService(fakeOrderService);
 
-        shoppingCart.checkout();
+        const order = shoppingCart.checkout();
 
-        expect(fakeShowConfirmation).toHaveBeenCalledTimes(1);
-        const actualTotalPrice = fakeShowConfirmation.mock.calls[0][2];
-        const actualLoyaltyPointsEarned = fakeShowConfirmation.mock.calls[0][3];
-        expect(actualTotalPrice).toBe(100);
-        expect(actualLoyaltyPointsEarned).toBe(20);
+        expect(order.totalPrice).toBe(100);
+        expect(order.loyaltyPoints).toBe(20);
     });
 });
 
