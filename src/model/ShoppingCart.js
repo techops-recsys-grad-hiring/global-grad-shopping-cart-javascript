@@ -1,13 +1,10 @@
 import _ from "lodash";
+import Order from "./Order.js";
 
 export default class ShoppingCart {
     constructor(customer, products) {
         this.customer = customer;
         this.products = products;
-    };
-
-    setOrderService = (orderService) => {
-        this.orderService = orderService;
     };
 
     addProduct = (product) => {
@@ -37,6 +34,11 @@ export default class ShoppingCart {
             totalPrice += product.price - discount;
         });
 
-        this.orderService.showConfirmation(this.customer, this.products, totalPrice, loyaltyPointsEarned);
+        return new Order(totalPrice, loyaltyPointsEarned);
     };
+
+    displaySummary = () =>  {
+        return "Customer: " + this.customer.name + "\n" + 
+            "Bought:  \n" + this.products.map(p => "- " + p.name + ", " + p.price).join('\n');
+    }
 };
