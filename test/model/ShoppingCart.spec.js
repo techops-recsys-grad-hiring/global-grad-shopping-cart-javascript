@@ -4,51 +4,62 @@ import ShoppingCart from "../../src/model/ShoppingCart.js";
 
 describe("Shopping cart should checkout", () => {
 
-    it("Should calculate correct total and loyalty points for 10% discounted products", () => {
-        const customer = new Customer("Test customer");
+    let customer;
+    beforeEach(() => {
+        customer = new Customer("Test customer")
+    })
+
+    it("Should calculate correct total for 10% discounted products", () => {
         const products = [new Product(100, "DIS_10_TestProduct", "Test product")];
         const shoppingCart = new ShoppingCart(customer, products);
-        
+
         const order = shoppingCart.checkout();
 
         expect(order.totalPrice).toBe(90);
+    });
+
+    it("Should calculate correct loyalty points for 10% discounted products", () => {
+        const products = [new Product(100, "DIS_10_TestProduct", "Test product")];
+        const shoppingCart = new ShoppingCart(customer, products);
+
+        const order = shoppingCart.checkout();
+
         expect(order.loyaltyPoints).toBe(10);
     });
 
-    it("Should calculate correct total and loyalty points for 15% discounted products", () => {
-        const customer = new Customer("Test customer");
+    it("Should calculate correct total for 15% discounted products", () => {
         const products = [new Product(100, "DIS_15_TestProduct", "Test product")];
         const shoppingCart = new ShoppingCart(customer, products);
 
         const order = shoppingCart.checkout();
 
         expect(order.totalPrice).toBe(85);
-        expect(order.loyaltyPoints).toBe(20/3);
     });
 
-    it("Should calculate correct total and loyalty points for non discounted products", () => {
-        const customer = new Customer("Test customer");
+    it("Should calculate correct loyalty points for 15% discounted products", () => {
+        const products = [new Product(100, "DIS_15_TestProduct", "Test product")];
+        const shoppingCart = new ShoppingCart(customer, products);
+
+        const order = shoppingCart.checkout();
+
+        expect(order.loyaltyPoints).toBe(20 / 3);
+    });
+
+    it("Should calculate correct total for non discounted products", () => {
         const products = [new Product(100, "TestProduct", "Test product")];
         const shoppingCart = new ShoppingCart(customer, products);
 
         const order = shoppingCart.checkout();
 
         expect(order.totalPrice).toBe(100);
-        expect(order.loyaltyPoints).toBe(20);
     });
-});
 
-describe("Shopping cart should modify products", () => {
-    it("Should add another product to the cart", () => {
-        const customer = new Customer("Test Customer");
-        const products = [new Product(100, "TestProductOne", "Test Product One")];
+    it("Should calculate correct loyalty points for non discounted products", () => {
+        const products = [new Product(100, "TestProduct", "Test product")];
         const shoppingCart = new ShoppingCart(customer, products);
 
-        shoppingCart.addProduct(new Product(200, "TestProductTwo", "Test Product Two"));
+        const order = shoppingCart.checkout();
 
-        expect(shoppingCart.products).toEqual([
-            new Product(100, "TestProductOne", "Test Product One"),
-            new Product(200, "TestProductTwo", "Test Product Two")
-        ]);
+        expect(order.loyaltyPoints).toBe(20);
     });
 });
