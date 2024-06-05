@@ -1,4 +1,3 @@
-import _ from "lodash";
 import Order from "./Order.js";
 
 export default class ShoppingCart {
@@ -9,10 +8,6 @@ export default class ShoppingCart {
 
     addProduct = (product) => {
         this.products.push(product);
-    };
-
-    removeProduct = (product) => {
-        _.remove(this.products, product);
     };
 
     checkout = () => {

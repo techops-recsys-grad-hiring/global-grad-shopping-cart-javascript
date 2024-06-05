@@ -51,19 +51,4 @@ describe("Shopping cart should modify products", () => {
             new Product(200, "TestProductTwo", "Test Product Two")
         ]);
     });
-
-    it("Should remove a product from the cart", () => {
-        const customer = new Customer("Test Customer");
-        const products = [
-            new Product(100, "TestProductOne", "Test Product One"),
-            new Product(200, "TestProductTwo", "Test Product Two")
-        ];
-        const shoppingCart = new ShoppingCart(customer, products);
-
-        shoppingCart.removeProduct(new Product(200, "TestProductTwo", "Test Product Two"));
-
-        expect(shoppingCart.products).toEqual([
-            new Product(100, "TestProductOne", "Test Product One")
-        ]);
-    });
 });
