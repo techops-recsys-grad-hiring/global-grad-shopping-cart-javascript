@@ -6,7 +6,7 @@ describe("Shopping cart should checkout", () => {
 
     let customer;
     beforeEach(() => {
-        customer = new Customer("Test customer")
+        customer = new Customer("Test customer");
     });
 
     it("Should calculate correct total for 10% discounted products", () => {
